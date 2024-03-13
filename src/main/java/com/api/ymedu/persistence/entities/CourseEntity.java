@@ -24,4 +24,7 @@ public class CourseEntity {
     private String instructor;
     @Column(nullable = false)
     private String duration;
+
+
+
 }
