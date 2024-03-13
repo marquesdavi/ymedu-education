@@ -1,4 +1,4 @@
-package com.api.ymedu.persistence.entities;
+package com.api.ymedu.model.course;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "Courses", schema = "public")
-public class CourseEntity {
+public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
