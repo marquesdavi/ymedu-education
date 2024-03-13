@@ -1,6 +1,5 @@
 package com.api.ymedu;
 
-import com.api.ymedu.persistence.entities.CourseEntity;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
