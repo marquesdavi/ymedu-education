@@ -8,5 +8,8 @@ import java.util.UUID;
 
 @Repository
 public interface ICourseRepository extends JpaRepository<Course, UUID> {
+    Course findCourseById(UUID id);
 
+    @Override
+    void deleteById(UUID id);
 }
