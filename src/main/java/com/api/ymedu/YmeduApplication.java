@@ -41,7 +41,7 @@ public class YmeduApplication implements CommandLineRunner {
 					atualizarCursos();
 					break;
 				case 4:
-					apagarCursos();
+					apagarCursos(teclado);
 					break;
 				case 5:
 					System.out.println("Saindo...");
@@ -88,7 +88,15 @@ public class YmeduApplication implements CommandLineRunner {
 		System.out.println("Opção 3 selecionada: Atualizar os Cursos");
 	}
 
-	private void apagarCursos() {
+	private void apagarCursos(Scanner teclado) {
 		System.out.println("Opção 4 selecionada: Apagar um Curso");
+		System.out.print("Digite o nome: ");
+		String name = teclado.nextLine();
+		System.out.println(name);
+		try{
+			IcouseRepository.deleteByName(name);
+		} catch (Error err) {
+			System.out.println("Erro" + err);
+		}
 	}
 }
