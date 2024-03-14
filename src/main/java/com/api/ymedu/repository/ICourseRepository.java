@@ -12,4 +12,6 @@ public interface ICourseRepository extends JpaRepository<Course, UUID> {
 
     @Override
     void deleteById(UUID id);
+
+    void save();
 }

@@ -1,5 +1,8 @@
 package com.api.ymedu;
 
+import com.api.ymedu.model.course.Course;
+import com.api.ymedu.repository.ICourseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,7 +15,8 @@ public class YmeduApplication implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(YmeduApplication.class, args);
 	}
-
+	@Autowired
+	private ICourseRepository IcouseRepository;
 	@Override
 	public void run(String... args) throws Exception {
 		Scanner teclado = new Scanner(System.in);
@@ -61,22 +65,25 @@ public class YmeduApplication implements CommandLineRunner {
 		String duration = teclado.nextLine();
 
 
-		/*
-		novo.setName(name);
-		novo.setDescription(description);
-		novo.setContent(content);
-		novo.setInstructor(instructor);
-		novo.setDuration(duration);
-		*/
+		Course novoCurso = new Course();
+		novoCurso.setName(name);
+		novoCurso.setDescription(description);
+		novoCurso.setContent(content);
+		novoCurso.setInstructor(instructor);
+		novoCurso.setDuration(duration);
 
+			IcouseRepository.save(novoCurso);
 		System.out.println("Curso adicionado com sucesso!");
 	}
 
 	private void listarCursos() {
 		System.out.println("Opção 2 selecionada: Listar os Cursos");
-
+		for(Course item : IcouseRepository.findAll()) {
+			System.out.println("\n Nome: " + item.getName() + "\n Descrição: " + item.getDescription() +
+					"\n Conteudo: " + item.getContent() + "\n Intrutor: " +
+					item.getInstructor() + "\n Duração do curso: " + item.getDuration());
+		}
 	}
-
 	private void atualizarCursos() {
 		System.out.println("Opção 3 selecionada: Atualizar os Cursos");
 	}
