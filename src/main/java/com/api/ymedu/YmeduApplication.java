@@ -9,6 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.Scanner;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+
 @SpringBootApplication
 public class YmeduApplication implements CommandLineRunner {
 
@@ -31,7 +34,14 @@ public class YmeduApplication implements CommandLineRunner {
             System.out.println("4-Apagar um curso");
             System.out.println("5-Sair");
             System.out.println("\nEscolha uma opção(número): ");
-            int opc = Integer.parseInt(teclado.nextLine());
+            String input = teclado.nextLine();
+            int opc = 0;
+            try {
+                opc = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("\n Por favor insira um número válido");
+                continue;
+            }
 
             switch (opc) {
                 case 1:
@@ -49,9 +59,10 @@ public class YmeduApplication implements CommandLineRunner {
                     break;
                 case 5:
                     System.out.println("\nSaindo...");
+                    System.exit(0);
                     return;
                 default:
-                    System.out.println("\nOpção inválida! Por favor, escolha uma opção válida.");
+                    System.out.println("\n Por favor insira um número válido.");
             }
         }
     }
@@ -59,6 +70,11 @@ public class YmeduApplication implements CommandLineRunner {
     private void adicionarCurso(Scanner teclado) {
         System.out.print("Digite o nome: ");
         String name = teclado.nextLine();
+        Course course = repository.findCourseByName(name);
+        if(nonNull(course)) {
+            System.out.println("Nome de curso já existente");
+            return;
+        }
         System.out.print("Digite a descriçao: ");
         String description = teclado.nextLine();
         System.out.print("Digite o conteudo: ");
@@ -98,14 +114,17 @@ public class YmeduApplication implements CommandLineRunner {
         System.out.print("Digite o nome do curso que deseja editar: ");
         String name = teclado.nextLine();
         System.out.println("Curso selecionado: " + name);
-
-        Course course = repository.findCourseByName(name);
+    	Course course = repository.findCourseByName(name);
 
         int opc = 0;
         String field = null;
 
         do {
-            System.out.println("""
+            if(isNull(course)) {
+                System.out.println("\nCurso não encontrado");
+                opc = 6;
+            } else {
+                System.out.println("""
                     			\n1 - Nome
                     2 - Descrição
                     3 - Conteúdo
@@ -113,8 +132,9 @@ public class YmeduApplication implements CommandLineRunner {
                     5 - Duração
                     6 - Voltar para o menu principal
                     """);
-            System.out.print("\nEscolha o campo que deseja editar(numero): ");
-            opc = Integer.parseInt(teclado.nextLine());
+                System.out.print("\nEscolha o campo que deseja editar(numero): ");
+                opc = Integer.parseInt(teclado.nextLine());
+            }
 
             if (opc != 6) {
                 System.out.print("\nDigite o novo valor do campo: ");
