@@ -1,6 +1,7 @@
 package com.api.ymedu.controller;
 
 import com.api.ymedu.dto.course.CourseDTO;
+
 import com.api.ymedu.service.CourseService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,17 @@ public class CourseController {
     public CourseController(CourseService service){
         this.service = service;
     }
+
+    @GetMapping(value = "")
+    public ResponseEntity<?> listCourses(){
+        return service.listCourses();
+    }
+
+    @PostMapping(value = "")
+    public ResponseEntity<?> createCourse(@RequestBody CourseDTO courseDto){
+        return service.createCourse(courseDto);
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity updateCourse(
