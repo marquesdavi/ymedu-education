@@ -67,8 +67,10 @@ public class CourseService {
         }
     }
 
-    public ResponseEntity getCourseById(Integer id) {
-        return ResponseEntity.ok("Course deleted successfully!");
+    public ResponseEntity<?> getCourseById(UUID id){
+        Course course = repository.findCourseById(id);
+        CourseDTO courseDto = new CourseDTO(course.getName(), course.getDescription(), course.getContent(), course.getInstructor(), course.getDuration());
+        return ResponseEntity.ok(courseDto);
     }
 
     public ResponseEntity<?> listCourses() {

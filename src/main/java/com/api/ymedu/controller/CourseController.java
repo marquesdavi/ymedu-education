@@ -25,6 +25,11 @@ public class CourseController {
         return service.listCourses();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getCourseById(@PathVariable UUID id){
+        return service.getCourseById(id);
+    }
+
     @PostMapping()
     public ResponseEntity<?> createCourse(@RequestBody CourseDTO courseDto){
         return service.createCourse(courseDto);
