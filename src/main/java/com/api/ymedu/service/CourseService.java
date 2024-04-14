@@ -6,26 +6,25 @@ import com.api.ymedu.model.course.Course;
 import com.api.ymedu.repository.ICourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
     private ICourseRepository repository;
 
     @Autowired
-    public CourseService (ICourseRepository repository){
+    public CourseService(ICourseRepository repository) {
         this.repository = repository;
     }
-    public ResponseEntity<?> createCourse(CourseDTO courseDto){
+
+    public ResponseEntity<?> createCourse(CourseDTO courseDto) {
         Course course = new Course();
         course.setName(courseDto.name());
         course.setDescription(courseDto.description());
@@ -37,8 +36,8 @@ public class CourseService {
     }
 
     @Transactional
-    public ResponseEntity updateCourse(UUID id, CourseDTO courseDTO){
-        try{
+    public ResponseEntity updateCourse(UUID id, CourseDTO courseDTO) {
+        try {
             Course course = repository.findById(id).get();
 
             course.setName(courseDTO.name());
@@ -47,22 +46,32 @@ public class CourseService {
             course.setDuration(courseDTO.duration());
             course.setContent(courseDTO.content());
 
-            return new ResponseEntity(repository.save(course), HttpStatus.OK);
+            repository.save(course);
 
-        } catch (NoSuchElementException ex){
-            return new ResponseEntity("Course not found, please, try again!", HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new DefaultResponseDTO(true, "Course updated successfully!"), HttpStatus.OK);
+
+        } catch (NoSuchElementException ex) {
+            return new ResponseEntity(new DefaultResponseDTO(false, "Course not found, please, try again!"), HttpStatus.NOT_FOUND);
         }
     }
 
-    public ResponseEntity deleteCourse(){
+    @Transactional
+    public ResponseEntity deleteCourse(UUID id) {
+        try {
+            repository.deleteById(id);
+
+            return new ResponseEntity(new DefaultResponseDTO(true, "Course removed successfully!"), HttpStatus.OK);
+
+        } catch (NoSuchElementException ex) {
+            return new ResponseEntity(new DefaultResponseDTO(false, "Course not found, please, try again!"), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity getCourseById(Integer id) {
         return ResponseEntity.ok("Course deleted successfully!");
     }
 
-    public ResponseEntity getCourseById(Integer id){
-        return ResponseEntity.ok("Course deleted successfully!");
-    }
-
-    public ResponseEntity<?> listCourses(){
+    public ResponseEntity<?> listCourses() {
         List<CourseDTO> courses = repository.findAll().stream()
                 .map(course -> new CourseDTO(course.getName(), course.getDescription(), course.getContent(), course.getInstructor(), course.getDuration()))
                 .collect(Collectors.toList());

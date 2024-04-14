@@ -20,12 +20,12 @@ public class CourseController {
         this.service = service;
     }
 
-    @GetMapping(value = "")
+    @GetMapping()
     public ResponseEntity<?> listCourses(){
         return service.listCourses();
     }
 
-    @PostMapping(value = "")
+    @PostMapping()
     public ResponseEntity<?> createCourse(@RequestBody CourseDTO courseDto){
         return service.createCourse(courseDto);
     }
@@ -36,5 +36,11 @@ public class CourseController {
             @PathVariable UUID id,
             @Valid @RequestBody CourseDTO courseDTO){
         return service.updateCourse(id, courseDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteCourse(
+            @PathVariable UUID id){
+        return service.deleteCourse(id);
     }
 }
