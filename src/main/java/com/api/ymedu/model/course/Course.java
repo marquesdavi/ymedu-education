@@ -24,7 +24,4 @@ public class Course {
     private String instructor;
     @Column(nullable = false)
     private String duration;
-
-
-
 }
