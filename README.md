@@ -18,4 +18,4 @@ Crash course platform
 
 ## Database structure
 
-![App Screenshot](doc/database uml.png)
+![App Screenshot](doc/databaseuml.png)
